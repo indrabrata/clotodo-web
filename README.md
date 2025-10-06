@@ -26,8 +26,6 @@ npm install --save-dev shadow-cljs
 ```bash
 # Run migrations using Leiningen
 lein migratus migrate
-
-# If you encounter issues, check your database connection in project.clj
 ```
 
 ## Step 4: Start Development Environment
@@ -53,7 +51,7 @@ shadow-cljs watch app
 
 ## Step 5: Access the Application
 
-Open your browser and navigate to:
+Open browser and navigate to:
 
 - Frontend: [http://localhost:8080](http://localhost:8080)
 - Backend API: [http://localhost:3000/api](http://localhost:3000/api)
@@ -62,31 +60,37 @@ Open your browser and navigate to:
 
 ```md
 clotodo-web/
-├── project.clj              # Leiningen configuration
-├── shadow-cljs.edn          # ClojureScript build config
+├── project.clj                     # Leiningen configuration
+├── shadow-cljs.edn                 # ClojureScript build config
+├── package.json                     # Node.js package configuration
+├── package-lock.json                # Node.js package lock file
+├── compose.dev.yaml                 # Docker Compose development configuration
+├── Makefile                         # Makefile for common tasks
 ├── resources/
 │   ├── public/
-│   │   ├── index.html       # Main HTML file
+│   │   ├── index.html              # Main HTML entry point
 │   │   └── css/
-│   │       └── style.css    # Application styles
-│   ├── migrations/          # Database migration files
-│   └── sql/
-│       └── queries.sql      # HugSQL queries
+│   │       └── style.css           # Application styles
+│   └── migrations/                 # Database migration files
+│
 ├── src/
-│   ├── clj/clotodo_web/         # Backend Clojure code
-│   │   ├── core.clj         # Main application entry
-│   │   ├── handler.clj      # HTTP handlers & routes
-│   │   ├── db.clj           # Database connection
-│   │   └── auth.clj         # Authentication logic
-│   └── cljs/clotodo_web/        # Frontend ClojureScript code
-│       ├── core.cljs        # Main app component
-│       ├── state.cljs       # Application state
-│       ├── api.cljs         # API client
-│       ├── router.cljs      # Client-side routing
-│       └── views/           # React components
-│           ├── auth.cljs    # Login/Signup views
-│           ├── dashboard.cljs  # Dashboard view
-│           └── room.cljs    # Room/Todo view
+│   ├── clj/
+│   │   └── clotodo_web/
+│   │       ├── core.clj            # Main backend entry point
+│   │       ├── handler.clj         # HTTP routes & request handlers
+│   │       ├── db.clj              # Database connection & queries
+│   │       └── auth.clj            # Authentication logic
+│   └── cljs/
+│       └── clotodo_web/
+│           ├── core.cljs           # Main frontend app entry
+│           ├── state.cljs          # Application state management
+│           ├── api.cljs            # API client requests
+│           ├── router.cljs         # Client-side routing
+│           └── views/              # UI Components
+│               ├── auth.cljs       # Authentication views (Login/Signup)
+│               ├── dashboard.cljs  # Dashboard view
+│               └── room.cljs       # Room/Todo view
+└── README.md                       # Project overview & setup instructions
 
 ```
 
@@ -101,7 +105,7 @@ The backend uses Ring with auto-reload. Any changes to `.clj` files will require
 lein run
 ```
 
-For faster development, you can use a REPL:
+For faster development, use a REPL:
 
 ```bash
 lein repl
@@ -140,15 +144,6 @@ npx shadow-cljs release app
 
 # The compiled JS will be in resources/public/js/main.js
 ```
-
-### Deploy
-
-For production deployment, you'll need to:
-
-1. Set up environment variables for database credentials
-2. Configure the secret key for JWT in `auth.clj`
-3. Set up a reverse proxy (nginx) to serve both frontend and backend
-4. Use a process manager like systemd or supervisord
 
 ## Common Commands
 
@@ -292,15 +287,3 @@ Update the API URL in `src/cljs/clotodo/api.cljs` for production:
 
 - `PUT /api/todos/:todo-id/toggle` - Toggle todo status (requires auth)
 - `DELETE /api/todos/:todo-id` - Delete todo (requires auth)
-
-## Environment Variables
-
-For production deployment, use environment variables:
-
-```bash
-# .env file (not committed to git)
-DATABASE_URL=postgresql://user:pass@localhost:5432/clotodo
-JWT_SECRET=your-very-secure-secret-key-here
-PORT=3000
-NODE_ENV=production
-```
