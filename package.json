@@ -1,0 +1,21 @@
+{
+  "name": "clotodo-web",
+  "version": "1.0.0",
+  "description": "FIXME: description",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "shadow-cljs watch app",
+    "release": "shadow-cljs release app" 
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "shadow-cljs": "^3.2.1"
+  }
+}

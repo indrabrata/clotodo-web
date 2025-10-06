@@ -1,0 +1,24 @@
+name: clotodo-web
+
+services:
+  db:
+    image: postgres:17
+    container_name: clotodo-web-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: clotodo_web
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - clotodo-web-net
+
+volumes:
+  postgres_data:
+
+networks:
+  clotodo-web-net:
+    driver: bridge
