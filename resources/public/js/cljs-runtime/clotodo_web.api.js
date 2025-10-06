@@ -28,5 +28,25 @@ return ajax.core.POST.cljs$core$IFn$_invoke$arity$variadic([clotodo_web.api.api_
 return cljs.core.reset_BANG_(clotodo_web.state.error,"Invalid room code");
 })], null)], 0));
 });
+clotodo_web.api.get_todos = (function clotodo_web$api$get_todos(room_id,callback){
+return ajax.core.GET.cljs$core$IFn$_invoke$arity$variadic([clotodo_web.api.api_url,"/rooms/",cljs.core.str.cljs$core$IFn$_invoke$arity$1(room_id),"/todos"].join(''),cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null,"headers","headers",-835030129),clotodo_web.api.auth_header(),new cljs.core.Keyword(null,"response-format","response-format",1664465322),new cljs.core.Keyword(null,"json","json",1279968570),new cljs.core.Keyword(null,"keywords?","keywords?",764949733),true,new cljs.core.Keyword(null,"handler","handler",-195596612),callback,new cljs.core.Keyword(null,"error-handler","error-handler",-484945776),(function (){
+return cljs.core.reset_BANG_(clotodo_web.state.error,"Failed to load todos");
+})], null)], 0));
+});
+clotodo_web.api.create_todo = (function clotodo_web$api$create_todo(room_id,title,description,callback){
+return ajax.core.POST.cljs$core$IFn$_invoke$arity$variadic([clotodo_web.api.api_url,"/rooms/",cljs.core.str.cljs$core$IFn$_invoke$arity$1(room_id),"/todos"].join(''),cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.PersistentArrayMap(null, 7, [new cljs.core.Keyword(null,"headers","headers",-835030129),clotodo_web.api.auth_header(),new cljs.core.Keyword(null,"params","params",710516235),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"title","title",636505583),title,new cljs.core.Keyword(null,"description","description",-1428560544),description], null),new cljs.core.Keyword(null,"format","format",-1306924766),new cljs.core.Keyword(null,"json","json",1279968570),new cljs.core.Keyword(null,"response-format","response-format",1664465322),new cljs.core.Keyword(null,"json","json",1279968570),new cljs.core.Keyword(null,"keywords?","keywords?",764949733),true,new cljs.core.Keyword(null,"handler","handler",-195596612),callback,new cljs.core.Keyword(null,"error-handler","error-handler",-484945776),(function (){
+return cljs.core.reset_BANG_(clotodo_web.state.error,"Failed to create todo");
+})], null)], 0));
+});
+clotodo_web.api.toggle_todo = (function clotodo_web$api$toggle_todo(todo_id,callback){
+return ajax.core.PUT.cljs$core$IFn$_invoke$arity$variadic([clotodo_web.api.api_url,"/todos/",cljs.core.str.cljs$core$IFn$_invoke$arity$1(todo_id),"/toggle"].join(''),cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null,"headers","headers",-835030129),clotodo_web.api.auth_header(),new cljs.core.Keyword(null,"response-format","response-format",1664465322),new cljs.core.Keyword(null,"json","json",1279968570),new cljs.core.Keyword(null,"keywords?","keywords?",764949733),true,new cljs.core.Keyword(null,"handler","handler",-195596612),callback,new cljs.core.Keyword(null,"error-handler","error-handler",-484945776),(function (){
+return cljs.core.reset_BANG_(clotodo_web.state.error,"Failed to update todo");
+})], null)], 0));
+});
+clotodo_web.api.delete_todo = (function clotodo_web$api$delete_todo(todo_id,callback){
+return ajax.core.DELETE.cljs$core$IFn$_invoke$arity$variadic([clotodo_web.api.api_url,"/todos/",cljs.core.str.cljs$core$IFn$_invoke$arity$1(todo_id)].join(''),cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null,"headers","headers",-835030129),clotodo_web.api.auth_header(),new cljs.core.Keyword(null,"response-format","response-format",1664465322),new cljs.core.Keyword(null,"json","json",1279968570),new cljs.core.Keyword(null,"keywords?","keywords?",764949733),true,new cljs.core.Keyword(null,"handler","handler",-195596612),callback,new cljs.core.Keyword(null,"error-handler","error-handler",-484945776),(function (){
+return cljs.core.reset_BANG_(clotodo_web.state.error,"Failed to delete todo");
+})], null)], 0));
+});
 
 //# sourceMappingURL=clotodo_web.api.js.map

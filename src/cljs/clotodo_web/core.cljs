@@ -4,6 +4,7 @@
    [clotodo-web.state :as state]
    [clotodo-web.views.auth :as auth]
    [clotodo-web.views.dashboard :as dashboard]
+   [clotodo-web.views.room :as room]
    [reagent.dom :as rdom]))
 
 (defn app []
@@ -12,6 +13,7 @@
     [:div.app
      (cond
        (nil? token) [auth/auth-page]
+       (= current-page :room) [room/room-page]
        (= current-page :dashboard) [dashboard/dashboard-page]
        :else [dashboard/dashboard-page])]))
 

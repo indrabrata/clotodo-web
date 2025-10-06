@@ -5,6 +5,8 @@
 (defonce user (r/atom nil))
 (defonce current-page (r/atom :dashboard))
 (defonce current-room (r/atom nil))
+(defonce todos (r/atom []))
+(defonce loading (r/atom false))
 (defonce rooms (r/atom []))
 (defonce error (r/atom nil))
 

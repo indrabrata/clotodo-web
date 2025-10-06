@@ -15,6 +15,14 @@ if((typeof clotodo_web !== 'undefined') && (typeof clotodo_web.state !== 'undefi
 } else {
 clotodo_web.state.current_room = reagent.core.atom.cljs$core$IFn$_invoke$arity$1(null);
 }
+if((typeof clotodo_web !== 'undefined') && (typeof clotodo_web.state !== 'undefined') && (typeof clotodo_web.state.todos !== 'undefined')){
+} else {
+clotodo_web.state.todos = reagent.core.atom.cljs$core$IFn$_invoke$arity$1(cljs.core.PersistentVector.EMPTY);
+}
+if((typeof clotodo_web !== 'undefined') && (typeof clotodo_web.state !== 'undefined') && (typeof clotodo_web.state.loading !== 'undefined')){
+} else {
+clotodo_web.state.loading = reagent.core.atom.cljs$core$IFn$_invoke$arity$1(false);
+}
 if((typeof clotodo_web !== 'undefined') && (typeof clotodo_web.state !== 'undefined') && (typeof clotodo_web.state.rooms !== 'undefined')){
 } else {
 clotodo_web.state.rooms = reagent.core.atom.cljs$core$IFn$_invoke$arity$1(cljs.core.PersistentVector.EMPTY);

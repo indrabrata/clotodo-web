@@ -1,9 +1,7 @@
 (ns clotodo-web.auth
   (:require [buddy.sign.jwt :as jwt]
             [buddy.hashers :as hashers]
-            [buddy.auth :refer [authenticated?]]
-            [buddy.auth.backends.token :refer [jws-backend]] ; Changed from jwe-backend
-            [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
+            [buddy.auth.backends.token :refer [jws-backend]]
             [clj-time.core :as time]
             [crypto.random :as random]))
 
@@ -19,11 +17,6 @@
   (let [claims {:user-id user-id
                 :exp (time/plus (time/now) (time/hours 24))}]
     (jwt/sign claims secret)))
-
-(defn unsign-token [token]
-  (try
-    (jwt/unsign token secret)
-    (catch Exception e nil)))
 
 (def auth-backend
   (jws-backend {:secret secret

@@ -4,7 +4,7 @@
    [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
    [clotodo-web.auth :as auth]
    [clotodo-web.db :as db]
-   [compojure.core :refer [defroutes GET POST]]
+   [compojure.core :refer [defroutes GET POST PUT DELETE]]
    [compojure.route :as route]
    [ring.middleware.cors :refer [wrap-cors]]
    [ring.middleware.defaults :refer [api-defaults wrap-defaults]]
@@ -77,6 +77,35 @@
       (-> (response {:error "Room not found"})
           (status 404)))))
 
+(defn create-todo [db-spec request]
+ (let [user-id (get-in request [:identity :user-id])
+       room-id (Integer/parseInt (get-in request [:params :room-id]))
+       {:keys [title description]} (:body request)
+       todo (db/create-todo! db-spec {:room_id room-id
+                                       :user_id user-id
+                                       :title title
+                                       :description description})]
+   (response todo)))
+
+
+(defn get-todos [db-spec request]
+ (let [room-id (Integer/parseInt (get-in request [:params :room-id]))
+       todos (db/get-room-todos db-spec room-id)]
+   (response todos)))
+
+
+(defn toggle-todo [db-spec request]
+ (let [todo-id (Integer/parseInt (get-in request [:params :todo-id]))
+       todo (db/get-todo db-spec todo-id)
+       updated (db/update-todo-status! db-spec {:id todo-id
+                                                :is_done (not (:is_done todo))})]
+   (response updated)))
+
+(defn delete-todo [db-spec request]
+ (let [todo-id (Integer/parseInt (get-in request [:params :todo-id]))]
+   (db/delete-todo! db-spec todo-id)
+   (response {:success true})))
+
 (defn app-routes [db-spec]
   (defroutes routes
     (POST "/api/auth/signup" request (signup db-spec request))
@@ -87,7 +116,16 @@
     (POST "/api/rooms" request
       ((require-auth #(create-room db-spec %)) request))
     (POST "/api/rooms/join" request
-      ((require-auth #(join-room db-spec %)) request)) 
+      ((require-auth #(join-room db-spec %)) request))
+
+    (GET "/api/rooms/:room-id/todos" request
+      ((require-auth #(get-todos db-spec %)) request))
+    (POST "/api/rooms/:room-id/todos" request
+      ((require-auth #(create-todo db-spec %)) request))
+    (PUT "/api/todos/:todo-id/toggle" request
+      ((require-auth #(toggle-todo db-spec %)) request))
+    (DELETE "/api/todos/:todo-id" request
+      ((require-auth #(delete-todo db-spec %)) request))
 
 
     (route/not-found {:error "Not found"})))

@@ -60,3 +60,41 @@
      room_id user_id]
     {:builder-fn rs/as-unqualified-lower-maps}))
 
+(defn create-todo! [ds {:keys [room_id user_id title description]}]
+  (first
+    (jdbc/execute! ds
+      ["INSERT INTO todos (room_id, user_id, title, description)
+        VALUES (?, ?, ?, ?)
+        RETURNING *"
+       room_id user_id title description]
+      {:builder-fn rs/as-unqualified-lower-maps})))
+
+(defn get-room-todos [ds room_id]
+  (jdbc/execute! ds
+    ["SELECT t.*, u.username AS creator_name
+       FROM todos t
+       JOIN users u ON t.user_id = u.id
+       WHERE t.room_id = ?
+       ORDER BY t.created_at DESC"
+     room_id]
+    {:builder-fn rs/as-unqualified-lower-maps}))
+
+(defn get-todo [ds id]
+  (first
+    (jdbc/execute! ds
+      ["SELECT * FROM todos WHERE id = ?" id]
+      {:builder-fn rs/as-unqualified-lower-maps})))
+
+(defn update-todo-status! [ds {:keys [id is_done]}]
+  (first
+    (jdbc/execute! ds
+      ["UPDATE todos
+         SET is_done = ?, updated_at = CURRENT_TIMESTAMP
+         WHERE id = ?
+         RETURNING *"
+       is_done id]
+      {:builder-fn rs/as-unqualified-lower-maps})))
+
+(defn delete-todo! [ds id]
+  (jdbc/execute! ds
+    ["DELETE FROM todos WHERE id = ?" id]))

@@ -1,6 +1,6 @@
 (ns clotodo-web.api
   (:require [clotodo-web.state :as state]
-            [ajax.core :refer [POST GET]]))
+            [ajax.core :refer [POST GET PUT DELETE]]))
 
 (def api-url "http://localhost:3000/api")
 
@@ -52,3 +52,40 @@
          :keywords? true
          :handler callback
          :error-handler #(reset! state/error "Invalid room code")}))
+
+(defn get-todos [room-id callback]
+ (GET (str api-url "/rooms/" room-id "/todos")
+   {:headers (auth-header)
+    :response-format :json
+    :keywords? true
+    :handler callback
+    :error-handler #(reset! state/error "Failed to load todos")}))
+
+
+(defn create-todo [room-id title description callback]
+ (POST (str api-url "/rooms/" room-id "/todos")
+   {:headers (auth-header)
+    :params {:title title :description description}
+    :format :json
+    :response-format :json
+    :keywords? true
+    :handler callback
+    :error-handler #(reset! state/error "Failed to create todo")}))
+
+
+(defn toggle-todo [todo-id callback]
+ (PUT (str api-url "/todos/" todo-id "/toggle")
+   {:headers (auth-header)
+    :response-format :json
+    :keywords? true
+    :handler callback
+    :error-handler #(reset! state/error "Failed to update todo")}))
+
+
+(defn delete-todo [todo-id callback]
+ (DELETE (str api-url "/todos/" todo-id)
+   {:headers (auth-header)
+    :response-format :json
+    :keywords? true
+    :handler callback
+    :error-handler #(reset! state/error "Failed to delete todo")}))

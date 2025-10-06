@@ -9,4 +9,11 @@ migrate:
 .PHONY: migrate-rollback
 migrate:
 	lein migratus rollback
+	
+.PHONY: server-run
+server-run:
+	lein run
 
+.PHONY: client-run
+client-run:
+	npx shadow-cljs watch app
