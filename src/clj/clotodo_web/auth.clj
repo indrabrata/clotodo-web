@@ -2,7 +2,7 @@
   (:require [buddy.sign.jwt :as jwt]
             [buddy.hashers :as hashers]
             [buddy.auth :refer [authenticated?]]
-            [buddy.auth.backends.token :refer [jwe-backend]]
+            [buddy.auth.backends.token :refer [jws-backend]] ; Changed from jwe-backend
             [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
             [clj-time.core :as time]
             [crypto.random :as random]))
@@ -21,9 +21,13 @@
     (jwt/sign claims secret)))
 
 (defn unsign-token [token]
- (try
-   (jwt/unsign token secret)
-   (catch Exception e nil)))
+  (try
+    (jwt/unsign token secret)
+    (catch Exception e nil)))
 
 (def auth-backend
-  (jwe-backend {:secret secret}))
+  (jws-backend {:secret secret
+                :token-name "Bearer"}))
+
+(defn generate-room-code []
+  (random/base32 8))

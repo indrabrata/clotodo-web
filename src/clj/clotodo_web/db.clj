@@ -28,3 +28,35 @@
                    ["SELECT * FROM users WHERE email = ?" email]
                    {:builder-fn rs/as-unqualified-lower-maps})))
 
+(defn create-room! [ds {:keys [name owner_id is_public access_code]}]
+  (first
+    (jdbc/execute! ds
+      ["INSERT INTO rooms (name, owner_id, is_public, access_code)
+        VALUES (?, ?, ?, ?)
+        RETURNING *"
+       name owner_id is_public access_code]
+      {:builder-fn rs/as-unqualified-lower-maps})))
+
+(defn get-room-by-code [ds access_code]
+  (first
+    (jdbc/execute! ds
+      ["SELECT * FROM rooms WHERE access_code = ?" access_code]
+      {:builder-fn rs/as-unqualified-lower-maps})))
+
+(defn get-user-rooms [ds user_id]
+  (jdbc/execute! ds
+    ["SELECT r.* FROM rooms r
+       JOIN room_members rm ON r.id = rm.room_id
+       WHERE rm.user_id = ?
+       ORDER BY r.created_at DESC"
+     user_id]
+    {:builder-fn rs/as-unqualified-lower-maps}))
+
+(defn add-room-member! [ds {:keys [room_id user_id]}]
+  (jdbc/execute! ds
+    ["INSERT INTO room_members (room_id, user_id)
+       VALUES (?, ?)
+       ON CONFLICT DO NOTHING"
+     room_id user_id]
+    {:builder-fn rs/as-unqualified-lower-maps}))
+

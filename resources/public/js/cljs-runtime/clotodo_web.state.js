@@ -11,6 +11,14 @@ if((typeof clotodo_web !== 'undefined') && (typeof clotodo_web.state !== 'undefi
 } else {
 clotodo_web.state.current_page = reagent.core.atom.cljs$core$IFn$_invoke$arity$1(new cljs.core.Keyword(null,"dashboard","dashboard",-631747508));
 }
+if((typeof clotodo_web !== 'undefined') && (typeof clotodo_web.state !== 'undefined') && (typeof clotodo_web.state.current_room !== 'undefined')){
+} else {
+clotodo_web.state.current_room = reagent.core.atom.cljs$core$IFn$_invoke$arity$1(null);
+}
+if((typeof clotodo_web !== 'undefined') && (typeof clotodo_web.state !== 'undefined') && (typeof clotodo_web.state.rooms !== 'undefined')){
+} else {
+clotodo_web.state.rooms = reagent.core.atom.cljs$core$IFn$_invoke$arity$1(cljs.core.PersistentVector.EMPTY);
+}
 if((typeof clotodo_web !== 'undefined') && (typeof clotodo_web.state !== 'undefined') && (typeof clotodo_web.state.error !== 'undefined')){
 } else {
 clotodo_web.state.error = reagent.core.atom.cljs$core$IFn$_invoke$arity$1(null);
@@ -40,6 +48,15 @@ return null;
 } else {
 return null;
 }
+});
+clotodo_web.state.logout_BANG_ = (function clotodo_web$state$logout_BANG_(){
+cljs.core.reset_BANG_(clotodo_web.state.token,null);
+
+cljs.core.reset_BANG_(clotodo_web.state.user,null);
+
+localStorage.removeItem("token");
+
+return localStorage.removeItem("user");
 });
 
 //# sourceMappingURL=clotodo_web.state.js.map
